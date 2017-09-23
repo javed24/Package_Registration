@@ -1,0 +1,111 @@
+<div class="row container" ng-controller = "addController">
+  <h3 class = "container">{{message3}}</h3>
+  <div class="col-sm-6 forms">
+
+    <div class="page-header">
+      <h4>Add Module <small><input type = "checkbox" ng-model = "checked">Hide Form</input></small></h4>
+    </div>
+    <form ng-hide = "checked">
+      <div class="form-group">
+        <label>Module Name</label>
+        <input type="text" class="form-control" ng-model = "moduleName">
+      </div>
+      <div class="form-group">
+        <label>Module Website</label>
+        <div class="input-group">
+          <div class="input-group-addon">http://</div>
+          <input type="text" class="form-control" ng-model = "moduleWebsite">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" ng-click= "submitModule(moduleName,moduleWebsite)">Add Module</button>
+    </form>
+
+
+    <div class="page-header">
+      <h4>Sign-Up <small><input type = "checkbox" ng-model = "checked2">Hide Form</input></small></h4>
+    </div>
+    <form ng-hide = "checked2">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" class="form-control" ng-model = "firstName">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" class="form-control" ng-model = "lastName">
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" ng-model = "emailAddress">
+      </div>
+      <div class="form-group">
+        <label>Module</label>
+        <!--dropdown-->
+        <select ng-model="selectedName" ng-options="x for x in moduleArray"></select>
+        <!--end dropdown-->
+    </div>
+    <button type="submit" class="btn btn-primary" ng-click= "submitSignUp()">Sign-Up</button>
+  </form>
+  <br><br><br>
+</div>
+
+
+<div class="col-sm-6 groups">
+  <div class="page-header">
+    <h4>Modules &amp; Groups</h4>
+  </div>
+
+  <!--start test : empty panels-->
+    <div class="" ng-if="moduleArray.length!=0" ng-hide ="modules.length != 0">
+      <div class="col-sm-6 groups">
+        <!--panel div start for empty panels-->
+        <div class="panel panel-primary" ng-repeat = "module in moduleArray | orderBy: 'module'"> <!--ng-repeat test start-->
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a  href="https://{{moduleWebsite}}" target="_blank">{{module}}</a>
+            </h4>
+          </div>
+          <div class="panel-body">
+            <p class="text-center">No students have signed up for this module.</p>
+            <p class="text-right remove-group-link">
+              <button class="btn btn-warning" ng-click ="removeGroup($index, module)">
+                <span class="glyphicon glyphicon-trash"></span> Remove Group
+              </button>
+            </p>
+          </div>
+        </div> <!--ng-repeat test end-->
+        <!--panel block end for empty panels-->
+      </div>
+    </div>
+  <!--end test : empty panels-->
+
+  <div class="panel panel-primary" ng-repeat = "module in modules | orderBy: 'module_name'"> <!--ng-repeat test start-->
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a  href="https://{{module.module_website}}" target="_blank">{{module.module_name}}</a> <!-- |orderBy: 'module.module_name'-->
+      </h4>
+    </div>
+    <div class="panel-body">
+      <p class="text-center" ng-if="module.members.length==0" >No students have signed up for this module.</p>
+      <table class="table table-bordered table-hover table-striped">
+        <tr><th>First</th><th>Last</th><th>E-mail</th><th></th></tr>
+        <tr ng-repeat = "member in module.members">
+          <td>{{member.first_name}}</td>
+          <td>{{member.last_name}}</td>
+          <td>{{member.email}}</td>
+          <!-- <td><pre>{{ member | json }}</pre></td> -->
+          <td class="text-center">
+            <button class="btn btn-warning btn-sm" ng-click ="module.members.splice($index,1)"> <!--removeUser(member)-->
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </td>
+        </tr>
+      </table>
+      <p class="text-right remove-group-link">
+        <button class="btn btn-warning" ng-click ="removeGroup($index, module)">
+          <span class="glyphicon glyphicon-trash"></span> Remove Group
+        </button>
+      </p>
+    </div>
+  </div> <!--ng-repeat test end-->
+</div>
+</div>
